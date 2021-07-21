@@ -20,6 +20,7 @@ from chia.util.api_decorators import api_request, peer_required
 from chia.util.ints import uint8, uint32, uint64
 from chia.wallet.derive_keys import master_sk_to_local_sk
 
+from chia.util.hash import std_hash
 
 class HarvesterAPI:
     harvester: Harvester
@@ -120,6 +121,11 @@ class HarvesterAPI:
                             new_challenge.sp_hash,
                         )
                         sp_interval_iters = calculate_sp_interval_iters(self.harvester.constants, sub_slot_iters)
+                        sp_quality_string: bytes32 = std_hash(quality_str + new_challenge.sp_hash)
+                        self.harvester.log.info(
+                            f"Iters Required({required_iters}, {len(str(required_iters))}) Max({sp_interval_iters}, {len(str(sp_interval_iters))})"
+                            f" hash: {sp_quality_string.hex()}"
+                        )
                         if required_iters < sp_interval_iters:
                             # Found a very good proof of space! will fetch the whole proof from disk,
                             # then send to farmer
