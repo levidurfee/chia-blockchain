@@ -22,9 +22,11 @@ from chia.server.server import ssl_context_for_root
 from chia.ssl.create_ssl import get_mozilla_ca_crt
 from chia.types.blockchain_format.pool_target import PoolTarget
 from chia.types.blockchain_format.proof_of_space import ProofOfSpace
+from chia.types.blockchain_format.sized_bytes import bytes32
 from chia.util.api_decorators import api_request, peer_required
 from chia.util.ints import uint32, uint64
 
+from chia.util.hash import std_hash
 
 class FarmerAPI:
     farmer: Farmer
@@ -83,6 +85,12 @@ class FarmerAPI:
                 new_proof_of_space.proof.size,
                 sp.difficulty,
                 new_proof_of_space.sp_hash,
+            )
+            sp_interval_iters = calculate_sp_interval_iters(self.farmer.constants, sp.sub_slot_iters)
+            sp_quality_string: bytes32 = std_hash(computed_quality_string + new_proof_of_space.sp_hash)
+            self.farmer.log.info(
+                f"Iters Required({required_iters}, {len(str(required_iters))}) Max({sp_interval_iters}, {len(str(sp_interval_iters))})"
+                f" hash: {sp_quality_string.hex()}"
             )
 
             # If the iters are good enough to make a block, proceed with the block making flow
