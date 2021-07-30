@@ -91,8 +91,8 @@ class FarmerAPI:
             sp_interval_iters = calculate_sp_interval_iters(self.farmer.constants, sp.sub_slot_iters)
             sp_quality_string: bytes32 = std_hash(computed_quality_string + new_proof_of_space.sp_hash)
             self.farmer.log.info(
+                f"hash: {sp_quality_string.hex()} "
                 f"Iters Required({required_iters}, {len(str(required_iters))}) Max({sp_interval_iters}, {len(str(sp_interval_iters))})"
-                f" hash: {sp_quality_string.hex()}"
             )
 
             # If the iters are good enough to make a block, proceed with the block making flow
