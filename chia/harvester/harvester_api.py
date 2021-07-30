@@ -124,7 +124,7 @@ class HarvesterAPI:
                         sp_quality_string: bytes32 = std_hash(quality_str + new_challenge.sp_hash)
                         self.harvester.log.info(
                             f"hash: {sp_quality_string.hex()} "
-                            f"Iters Required({required_iters}, {len(str(required_iters))}) Max({sp_interval_iters}, {len(str(sp_interval_iters))})"
+                            f"req({required_iters}, {len(str(required_iters))}) max({sp_interval_iters}, {len(str(sp_interval_iters))})"
                         )
                         if required_iters < sp_interval_iters:
                             # Found a very good proof of space! will fetch the whole proof from disk,

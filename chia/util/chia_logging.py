@@ -20,7 +20,7 @@ def initialize_logging(service_name: str, logging_config: Dict, root_path: Path)
         handler.setFormatter(
             colorlog.ColoredFormatter(
                 f"%(asctime)s "
-                f"%(log_color)s%(levelname)-8s%(reset)s %(message)s",
+                f"%(log_color)s%(levelname)-1s%(reset)s %(message)s",
                 datefmt=log_date_format,
                 reset=True,
             )
@@ -34,7 +34,7 @@ def initialize_logging(service_name: str, logging_config: Dict, root_path: Path)
         handler = ConcurrentRotatingFileHandler(log_path, "a", maxBytes=20 * 1024 * 1024, backupCount=maxrotation)
         handler.setFormatter(
             logging.Formatter(
-                fmt=f"%(asctime)s %(levelname)-8s %(message)s",
+                fmt=f"%(asctime)s %(levelname)-1s %(message)s",
                 datefmt=log_date_format,
             )
         )
